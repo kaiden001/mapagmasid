@@ -64,26 +64,41 @@
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" name="name" class="form-control" id="name"
                                         autocomplete="off" placeholder="name" value="{{ $profileData->name }}">
+                                    @error('name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
                                     <input type="text" name="username" class="form-control" id="username"
                                         autocomplete="off" placeholder="Username" value="{{ $profileData->username }}">
+                                    @error('username')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email address</label>
                                     <input type="email" name="email" class="form-control" id="email"
                                         placeholder="Email" value="{{ $profileData->email }}">
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
                                     <input type="text" name="phone" class="form-control" id="phone"
                                         placeholder="phone" value="{{ $profileData->phone }}">
+                                    @error('phone')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Address</label>
                                     <input type="text" name="address" class="form-control" id="address"
                                         autocomplete="off" placeholder="Address" value="{{ $profileData->address }}">
+                                    @error('address')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3">

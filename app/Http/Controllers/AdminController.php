@@ -37,15 +37,14 @@ class AdminController extends Controller
     }
     public function AdminProfileStore(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'username' => 'required',
-        //     'email' => 'required',
-        //     'phone' => 'required',
-        //     'address' => 'required',
-        //     'photo' => 'required',
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required'
+        ]);
 
-        // ]);
         $id = Auth::user()->id;
         $data = User::find($id);
         $data->name = $request->name;
