@@ -45,6 +45,7 @@ License: For each use you must have a valid license purchased only from above li
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 </head>
 
 <body>
@@ -78,6 +79,30 @@ License: For each use you must have a valid license purchased only from above li
 
         <!-- Custom js for this page -->
         <script src="{{ asset('assets/js/dashboard-dark.js') }}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <script>
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
     </body>
 
 </body>
