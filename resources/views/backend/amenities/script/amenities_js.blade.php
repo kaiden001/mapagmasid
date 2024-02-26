@@ -1,10 +1,9 @@
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
     $(document).ready(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+
+
+
         var table = $('#amenities_table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -46,6 +45,31 @@
             "order": [
                 [0, "desc"]
             ]
+        });
+        // var channel = pusher.subscribe('amenities');
+        // channel.bind('app\\Events\\AmenitiesUpdated', function(data) {
+        //     console.log(data)
+        //     table.ajax.reload();
+        // });
+
+
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        // var pusher = new Pusher('00710d032d91ced3b23b', {
+        //     cluster: 'ap1'
+        // });
+        var pusher = new Pusher('00710d032d91ced3b23b', {
+            cluster: 'ap1',
+            encrypted: true
+        });
+
+        var channel = pusher.subscribe('amenities');
+        channel.bind('App\\Events\\AmenitiesUpdated', function(data) {
+            // alert(JSON.stringify(data));
+            console.log(data)
+            table.ajax.reload();
         });
 
 
@@ -207,7 +231,7 @@
                         icon: 'success',
                         title: 'Success',
                         html: response['message'],
-                        type: response['alert-type'],
+                        // type: response['alert-type'],
                         timer: 1500,
                         showConfirmButton: false,
                         allowOutsideClick: false

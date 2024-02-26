@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Amenities;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
+use App\Events\AmenitiesUpdated;
 
 class AmenitiesController extends Controller
 {
@@ -28,15 +29,25 @@ class AmenitiesController extends Controller
         $request->validate([
             'amenities_name' => 'required|unique:amenities,amenities_name|max:200'
         ]);
-        Amenities::insert([
+
+        // Create a new amenity and get the created instance
+        $amenity = Amenities::create([
             'amenities_name' => $request->amenities_name
         ]);
-        $notification = array(
-            'message' => 'Property Type Created Successfully',
+
+        // Broadcast the event with the newly created amenity
+        event(new AmenitiesUpdated($amenity));
+
+        // Prepare success notification
+        $notification = [
+            'message' => 'Amenity Created Successfully',
             'alert-type' => 'success'
-        );
+        ];
+
+        // Send response
         return response()->json($notification);
     }
+
     // public function GetAmenitiesData()
     // {
 

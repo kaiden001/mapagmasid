@@ -1,5 +1,6 @@
 @extends('admin.admin_dashboard')
 @section('admin')
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <div class="page-content">
 
         <nav class="page-breadcrumb">
