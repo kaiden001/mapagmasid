@@ -1,6 +1,6 @@
 @extends('admin.admin_dashboard')
 @section('admin')
-    <d iv class="page-content">
+    <div class="page-content">
 
         <nav class="page-breadcrumb">
             <ol class="breadcrumb">
@@ -33,7 +33,8 @@
                                             <td>
                                                 <a href="{{ route('edit.type', $item->id) }}"
                                                     class="btn btn-inverse-warning">Edit</a>
-                                                <a href="" class="btn btn-inverse-danger" id="delete">Delete</a>
+                                                <a href="{{ route('delete.type', $item->id) }}"
+                                                    class="btn btn-inverse-danger" id="delete">Delete</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -45,5 +46,5 @@
             </div>
         </div>
 
-        </div>
-    @endsection
+    </div>
+@endsection

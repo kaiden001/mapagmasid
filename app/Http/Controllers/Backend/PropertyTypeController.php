@@ -47,7 +47,7 @@ class PropertyTypeController extends Controller
     {
         $request->validate([
             'id' => 'required',
-            'type_name' => 'required|unique:property_types|max:200',
+            'type_name' => 'required|unique:property_types,type_name,' . $request->id . '|max:200',
             'type_icon' => 'required'
         ]);
         PropertyType::findOrFail($request->id)->update([
@@ -59,5 +59,14 @@ class PropertyTypeController extends Controller
             'alert-type' => 'success'
         );
         return redirect()->route('all.type')->with($notification);
+    }
+    public function DeleteType($id)
+    {
+        PropertyType::findOrFail($id)->delete();
+        $notification = array(
+            'message' => 'Property Type Deleted Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
     }
 }

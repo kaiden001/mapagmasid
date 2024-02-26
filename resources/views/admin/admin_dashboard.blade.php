@@ -26,7 +26,7 @@ License: For each use you must have a valid license purchased only from above li
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <!-- End fonts -->
-
+    <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
     <!-- endinject -->
@@ -41,11 +41,13 @@ License: For each use you must have a valid license purchased only from above li
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/demo2/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo1/style.css') }}">
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -64,9 +66,12 @@ License: For each use you must have a valid license purchased only from above li
         </div>
 
 
+
         <script src="{{ asset('assets/vendors/core/core.js') }}"></script>
         <!-- endinject -->
-
+        <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
+        <script src="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
+        <script src="{{ asset('assets/js/data-table.js') }}"></script>
         <!-- Plugin js for this page -->
         <script src="{{ asset('assets/vendors/flatpickr/flatpickr.min.js') }}"></script>
         <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
@@ -79,8 +84,11 @@ License: For each use you must have a valid license purchased only from above li
 
         <!-- Custom js for this page -->
         <script src="{{ asset('assets/js/dashboard-dark.js') }}"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+        <script src="{{ asset('assets/js/code/code.js') }}"></script>
         <script>
             @if (Session::has('message'))
                 var type = "{{ Session::get('alert-type', 'info') }}"
@@ -103,6 +111,7 @@ License: For each use you must have a valid license purchased only from above li
                 }
             @endif
         </script>
+
     </body>
 
 </body>
