@@ -54,12 +54,8 @@
 
 
 
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
 
-        // var pusher = new Pusher('00710d032d91ced3b23b', {
-        //     cluster: 'ap1'
-        // });
+        Pusher.logToConsole = true;
         var pusher = new Pusher('00710d032d91ced3b23b', {
             cluster: 'ap1',
             encrypted: true

@@ -30,7 +30,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">New Customers</h6>
+                                    <h6 class="card-title mb-0">Total Properties</h6>
                                     <div class="dropdown mb-2">
                                         <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
@@ -76,7 +76,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">New Orders</h6>
+                                    <h6 class="card-title mb-0">Amenities</h6>
                                     <div class="dropdown mb-2">
                                         <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
@@ -103,11 +103,15 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6 col-md-12 col-xl-5">
-                                        <h3 class="mb-2">35,084</h3>
+                                        <h3 class="mb-2" id="amenitiesCount">0</h3>
                                         <div class="d-flex align-items-baseline">
-                                            <p class="text-danger">
+                                            {{-- <p class="text-danger">
                                                 <span>-2.8%</span>
                                                 <i data-feather="arrow-down" class="icon-sm mb-1"></i>
+                                            </p> --}}
+                                            <p class="text-success">
+                                                <span>+3.3%</span>
+                                                <i data-feather="arrow-up" class="icon-sm mb-1"></i>
                                             </p>
                                         </div>
                                     </div>
@@ -434,4 +438,42 @@
         </div>
         <!-- row -->
     </div>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script>
+        const amenitiesCount = $('#amenitiesCount');
+
+        $(document).ready(function() {
+
+            function amenitiesNumber() {
+                $.ajax({
+                    url: '{{ route('count.amenities') }}',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type: 'POST',
+                    success: function(response) {
+
+                        amenitiesCount.text(response)
+                    }
+                })
+            }
+            amenitiesNumber()
+
+
+
+
+            // Pusher.logToConsole = true;
+            var pusher = new Pusher('00710d032d91ced3b23b', {
+                cluster: 'ap1',
+                encrypted: true
+            });
+
+            var channel = pusher.subscribe('amenities');
+            channel.bind('App\\Events\\AmenitiesUpdated', function(data) {
+                // alert(JSON.stringify(data));
+                amenitiesNumber()
+
+            });
+        });
+    </script>
 @endsection

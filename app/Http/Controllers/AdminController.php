@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -15,7 +16,7 @@ class AdminController extends Controller
     {
         return view('admin.index');
     }
-    public function AdminLogout(Request $request)
+    public function AdminLogout(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
 
@@ -23,7 +24,7 @@ class AdminController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('admin/login');
+        return redirect('/login-page');
     }
     public function AdminLogin()
     {

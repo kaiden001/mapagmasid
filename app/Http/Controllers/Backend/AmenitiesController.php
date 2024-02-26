@@ -11,6 +11,12 @@ use App\Events\AmenitiesUpdated;
 
 class AmenitiesController extends Controller
 {
+    public function CountAmenities()
+    {
+
+        $data = Amenities::all()->count();
+        return response()->json($data);
+    }
     public function AllAmenities()
     {
 
