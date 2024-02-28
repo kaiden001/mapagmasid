@@ -15,6 +15,6 @@ class AmenitiesSeeder extends Seeder
     public function run(): void
     {
 
-        Amenities::factory()->count(10000)->create();
+        Amenities::factory()->count(30000)->create();
     }
 }

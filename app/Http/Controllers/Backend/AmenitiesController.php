@@ -8,6 +8,7 @@ use App\Models\Amenities;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use App\Events\AmenitiesUpdated;
+use Illuminate\Support\Facades\DB;
 
 class AmenitiesController extends Controller
 {
@@ -62,17 +63,43 @@ class AmenitiesController extends Controller
     //         ->addIndexColumn()
     //         ->make(true);
     // }
-    public function GetAmenitiesData()
-    {
-        $data = Amenities::all(['id', 'amenities_name']);
+    // public function GetAmenitiesData()
+    // {
+    //     $data = Amenities::select('id', 'amenities_name')->paginate(10);
 
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row) {
-                // Add any additional columns or custom formatting here if needed
-                return '<div onclick ="displayModal(' . $row->id . ')" class="d-flex gap-2"><button class="btn btn-inverse-warning btn-sm">Edit</button><button class="btn btn-inverse-danger btn-sm">Delete</button></div>';
-            })
-            ->make(true);
+    //     return DataTables::of($data)
+    //         ->addIndexColumn()
+    //         ->addColumn('action', function ($row) {
+    //             // Add your custom action buttons here
+    //         })
+    //         ->make(true);
+    // }
+    // public function GetAmenitiesData()
+    // {
+    //     $data = Amenities::select('id', 'amenities_name')->limit(100000)->get();
+
+    //     return DataTables::of($data)
+    //         ->addIndexColumn()
+    //         ->addColumn('action', function ($row) {
+    //             // Add your custom action buttons here
+    //         })
+    //         ->make(true);
+    // }
+    public function GetAmenitiesData(Request $request)
+    {
+        $perPage = 10; // Number of records per page
+        $searchQuery = $request->input('search');
+        $query = DB::table('amenities');
+
+        // Apply search filter if search query is provided
+        if ($searchQuery) {
+            $query->where('amenities_name', 'like', '%' . $searchQuery . '%');
+        }
+
+        // Paginate the filtered query results
+        $data = $query->paginate($perPage);
+
+        return response()->json($data);
     }
     // public function GetAmenitiesData()
     // {

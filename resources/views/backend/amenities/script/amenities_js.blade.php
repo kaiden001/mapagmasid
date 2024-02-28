@@ -3,49 +3,152 @@
     $(document).ready(function() {
 
 
-
-        var table = $('#amenities_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": {
-                url: '{{ route('get.amenities') }}',
-                type: "POST",
+        function fetchData(page, searchQuery = '') {
+            $.ajax({
+                url: '{{ route('get.amenities') }}?page=' + page + '&search=' + searchQuery,
+                type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     // Include CSRF token in the request headers
                 },
-            },
-            "columns": [{
-                    "data": "DT_RowIndex",
+                success: function(response) {
+                    // Update table rows
+                    var html = '';
+                    if (!response || (!response.data || response.data.length === 0) &&
+                        response.total === 0) {
+                        html +=
+                            '<tr><td colspan="8" class="text-center">No data available</td></tr>';
+                    } else {
+                        $.each(response.data, function(index, item) {
+                            console.log(response)
+
+                            html += '<tr>';
+
+                            html += '<td>' + item.id + '</td>';
+                            html += '<td>' + item.amenities_name + '</td>';
+                            html += '<td>' + item.amenities_name + '</td>';
+                            html += '<td>' + item.amenities_name + '</td>';
+                            html += '<td>' + item.amenities_name + '</td>';
+                            html += '<td>' + item.amenities_name + '</td>';
+                            html += '<td>' + item.amenities_name + '</td>';
+                            html +=
+                                '<td><button class="btn btn-sm btn-primary" onclick ="displayModal(' +
+                                item.id + ')">Edit</button></td>';
+
+
+                            html += '</tr>';
+
+                        });
+                    }
+                    $('#amenities_table tbody').html(html);
+
+                    var totalPages = Math.ceil(response.total / 10);
+
+                    // Calculate start and end page numbers to display
+                    var startPage = Math.max(1, response.current_page - 5);
+                    var endPage = Math.min(totalPages, startPage + 9);
+
+                    // Update pagination links
+                    var paginationHtml = '';
+                    var paginationNumber = '';
+                    paginationNumber += '<span class="pe-5">Page ' + response.current_page +
+                        ' of ' +
+                        response
+                        .last_page + '</span>';
+                    if (response.prev_page_url) {
+
+                        paginationHtml += '<a href="#" class="page-link " data-page="' + (
+                            response
+                            .current_page - 1) + '">Previous</a>';
+                        paginationHtml += '<a href="#" class="page-link " data-page="' + (
+                            1) + '">First</a>';
+
+
+                    }
+                    for (var i = startPage; i <= endPage; i++) {
+                        paginationHtml += '<button class="page-link btn btn-sm ' + (i === response
+                                .current_page ? 'active' : '') + '" data-page="' + i + '">' + i +
+                            '</button>';
+                    }
+                    if (response.next_page_url) {
+                        paginationHtml += '<a href="#" class="page-link " data-page="' + (
+                            totalPages) + '">Last</a>';
+                        paginationHtml += '<a href="#" class="page-link" data-page="' + (response
+                            .current_page + 1) + '">Next</a>';
+
+                    }
+                    $('#pagination').html(paginationHtml);
+                    $('#paginationNumber').html(paginationNumber);
                 },
-                {
-                    "data": "amenities_name"
-                },
-                {
-                    "data": "amenities_name"
-                },
-                {
-                    "data": "amenities_name"
-                },
-                {
-                    "data": "amenities_name"
-                },
-                {
-                    "data": "amenities_name"
-                },
-                {
-                    "data": "amenities_name"
-                },
-                {
-                    "data": "action",
-                    "orderable": false,
-                    "searchable": false
-                },
-            ],
-            "order": [
-                [0, "desc"]
-            ]
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        // Initial data fetch
+        // Initial data fetch
+        fetchData(1);
+
+        // Pagination click event
+        $(document).on('click', '.page-link', function(e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            var searchQuery = $('#searchInput').val();
+            fetchData(page, searchQuery);
         });
+
+        $('#searchButton').click(function() {
+            var searchQuery = $('#searchInput').val();
+            fetchData(1, searchQuery); // Fetch data for the first page when search button is clicked
+        });
+
+        $('#resetSearch').click(function() {
+            $('#searchInput').val('');
+            fetchData(1, searchQuery = '')
+        })
+        // var table = $('#amenities_table').DataTable({
+        //     "processing": true,
+        //     "serverSide": true,
+        //     "ajax": {
+        //         url: '{{ route('get.amenities') }}',
+        //         type: "POST",
+        //         headers: {
+        //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //             // Include CSRF token in the request headers
+        //         },
+        //     },
+        //     "columns": [{
+        //             "data": "DT_RowIndex",
+        //         },
+        //         {
+        //             "data": "amenities_name"
+        //         },
+        //         {
+        //             "data": "amenities_name"
+        //         },
+        //         {
+        //             "data": "amenities_name"
+        //         },
+        //         {
+        //             "data": "amenities_name"
+        //         },
+        //         {
+        //             "data": "amenities_name"
+        //         },
+        //         {
+        //             "data": "amenities_name"
+        //         },
+        //         {
+        //             "data": "action",
+        //             "orderable": false,
+        //             "searchable": false
+        //         },
+        //     ],
+        //     "order": [
+        //         [0, "desc"]
+        //     ]
+        // });
         // var channel = pusher.subscribe('amenities');
         // channel.bind('app\\Events\\AmenitiesUpdated', function(data) {
         //     console.log(data)
@@ -65,7 +168,8 @@
         channel.bind('App\\Events\\AmenitiesUpdated', function(data) {
             // alert(JSON.stringify(data));
             console.log(data)
-            table.ajax.reload();
+            // table.ajax.reload();
+            fetchData(1)
         });
 
 
@@ -232,7 +336,8 @@
                         showConfirmButton: false,
                         allowOutsideClick: false
                     }).then(function() {
-                        table.ajax.reload();
+                        // table.ajax.reload();
+                        fetchData(1)
                     });
                     $('#addForm')[0].reset();
                     $('#addAmenities').modal('hide');

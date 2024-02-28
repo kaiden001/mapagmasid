@@ -48,6 +48,15 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title">All Amenities</h6>
+                        <div class="row">
+                            <div class="form-group col-4 d-flex">
+                                <input type="text" id="searchInput" class="form-control " placeholder="Search...">
+                                <button id="searchButton" class="btn btn-primary">Search </button>
+                                <button id="resetSearch" class="btn btn-secondary ms-2">Reset</button>
+                            </div>
+                        </div>
+
+
                         <div class="table-responsive">
                             <table id="amenities_table" class="table w-100">
                                 <thead>
@@ -65,6 +74,11 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div class="pagination mt-4 d-flex justify-content-between w-100">
+                                <div id="paginationNumber"></div>
+                                <div id="pagination" class="d-flex"></div>
+                                <!-- Pagination links will be inserted here -->
+                            </div>
                         </div>
                     </div>
                 </div>

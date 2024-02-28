@@ -103,7 +103,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6 col-md-12 col-xl-5">
-                                        <h3 class="mb-2" id="amenitiesCount">0</h3>
+                                        <h3 class="mb-2" id="amenitiesCount">Loading....</h3>
                                         <div class="d-flex align-items-baseline">
                                             {{-- <p class="text-danger">
                                                 <span>-2.8%</span>
@@ -453,13 +453,11 @@
                     type: 'POST',
                     success: function(response) {
 
-                        amenitiesCount.text(response)
+                        amenitiesCount.text(response.toLocaleString())
                     }
                 })
             }
             amenitiesNumber()
-
-
 
 
             // Pusher.logToConsole = true;
