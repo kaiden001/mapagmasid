@@ -2,59 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
+
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    //
+
+    public function viewProfile()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $id = Auth::user()->id;
+        $profileData = User::find($id);
+        return view('profile.profile_view', compact('profileData'));
     }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function EditProfile(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required'
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $id = Auth::user()->id;
+        $data = User::find($id);
+        $data->name = $request->name;
+        $data->username = $request->username;
+        $data->email = $request->email;
+        $data->phone = $request->phone;
+        $data->address = $request->address;
+        if ($request->file('photo')) {
+            $file = $request->file('photo');
+            @unlink(public_path('upload/profile/' . $data->photo));
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('upload/profile'), $filename);
+            $data['photo'] = $filename;
+        }
+        $data->save();
+
+        $notification = array(
+            'message' => 'Profile Updated Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+    public function ChangePassword()
+    {
+        $id = Auth::user()->id;
+        $profileData = User::find($id);
+        return view('profile.change_password', compact('profileData'));
+    }
+    public function UpdatePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed'
+        ]);
+        if (!Hash::check($request->old_password, auth::user()->password)) {
+            $notification = array(
+                'message' => 'Old Password Does Not Match!',
+                'alert-type' => 'error'
+            );
+            return back()->with($notification);
         }
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
         ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        $notification = array(
+            'message' => 'Password Updated Successfully!',
+            'alert-type' => 'success'
+        );
+        return back()->with($notification);
     }
 }

@@ -20,7 +20,20 @@ class AuthenticatedSessionController extends Controller
         // return view('auth.login');
         return view('admin.admin_login');
     }
-
+    public function Redirect()
+    {
+        $url = '';
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin') {
+            $url = 'admin/dashboard';
+        } else if (Auth::user()->role == 'enumerator') {
+            $url = 'enumerator/dashboard';
+        } else if (Auth::user()->role == 'user') {
+            $url = '/dashboard';
+        } else {
+            $url = 'login-page';
+        }
+        return redirect()->intended($url);
+    }
     /**
      * Handle an incoming authentication request.
      */
@@ -30,18 +43,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         $url = '';
-        if ($request->user()->role == 'admin') {
+        if ($request->user()->role == 'admin' || $request->user()->role == 'superadmin') {
             $url = 'admin/dashboard';
-        } else if ($request->user()->role == 'agent') {
-            $url = 'agent/dashboard';
+        } else if ($request->user()->role == 'enumerator') {
+            $url = 'enumerator/dashboard';
         } else if ($request->user()->role == 'user') {
             $url = '/dashboard';
         } else {
-            $url = 'admin/login';
+            $url = 'login-page';
         }
         return redirect()->intended($url);
     }
+    public function Logout(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
 
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login-page');
+    }
     /**
      * Destroy an authenticated session.
      */
@@ -53,6 +75,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login-page');
     }
 }

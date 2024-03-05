@@ -79,14 +79,15 @@ License: For each use you must have a valid license purchased only from above li
                                                 <label for="login" class="form-label">Email/Name/Phone</label>
                                                 <input type="text" class="form-control" id="login" name="login"
                                                     placeholder="Email" :value="old('login')"autofocus
-                                                    autocomplete="username" autocomplete="off">
+                                                    autocomplete="username">
                                                 <x-input-error :messages="$errors->get('login')"
                                                     class="mt-2 text-danger list-unstyled" />
                                             </div>
                                             <div class="mb-3">
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password"
-                                                    name="password" autocomplete="off" placeholder="Password">
+                                                    name="password" autocomplete="current-password"
+                                                    placeholder="Password">
                                                 <x-input-error :messages="$errors->get('password')"
                                                     class="mt-2 text-danger list-unstyled" />
                                             </div>

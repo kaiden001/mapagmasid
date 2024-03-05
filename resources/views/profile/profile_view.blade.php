@@ -1,4 +1,13 @@
-@extends('admin.admin_dashboard')
+@php
+    $user = Auth::user();
+    if ($user->role == 'admin') {
+        $extends_to = 'admin.admin_dashboard';
+    } elseif ($user->role == 'enumerator') {
+        $extends_to = 'enumerator.enumerator_dashboard';
+    }
+@endphp
+
+@extends($extends_to)
 @section('content')
     <div class="page-content">
         <div class="row profile-body">
@@ -10,7 +19,7 @@
 
                             <div>
                                 <img class="wd-100 rounded-circle"
-                                    src="{{ !empty($profileData->photo) ? url('upload/admin_images/' . $profileData->photo) : url('upload/no_image.jpg') }}"
+                                    src="{{ !empty($profileData->photo) ? url('upload/profile/' . $profileData->photo) : url('upload/no_image.jpg') }}"
                                     alt="profile">
                                 <span class="h4 ms-3">{{ $profileData->name }}</span>
                             </div>
@@ -55,7 +64,7 @@
 
                             <h6 class="card-title">Update Profile</h6>
 
-                            <form class="forms-sample" method="POST" action="{{ route('admin.profile.store') }}"
+                            <form class="forms-sample" method="POST" action="{{ route('profile.edit') }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
@@ -106,7 +115,7 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="showImage"></label>
                                     <img id="showImage" class="wd-80 rounded-circle"
-                                        src="{{ !empty($profileData->photo) ? url('upload/admin_images/' . $profileData->photo) : url('upload/no_image.jpg') }}"
+                                        src="{{ !empty($profileData->photo) ? url('upload/profile/' . $profileData->photo) : url('upload/no_image.jpg') }}"
                                         alt="profile">
                                 </div>
                                 <button type="submit" class="btn btn-primary me-2">Save Changes</button>

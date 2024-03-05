@@ -1,5 +1,5 @@
 @extends('admin.admin_dashboard')
-@section('admin')
+@section('content')
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <div class="page-content">
 

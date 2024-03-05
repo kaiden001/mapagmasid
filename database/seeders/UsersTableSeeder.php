@@ -16,22 +16,32 @@ class UsersTableSeeder extends Seeder
     {
         //
         DB::table('users')->insert([
+
+            // Superdmin
+            [
+                'name' => 'Superadmin',
+                'username' => 'superadmin',
+                'email' => 'superadmin@gmail.com',
+                'password' => Hash::make('Superadmin@123'),
+                'role' => 'superadmin',
+                'status' => 'active',
+            ],
             // Admin
             [
                 'name' => 'Admin',
                 'username' => 'admin',
                 'email' => 'admin@gmail.com',
-                'password' => Hash::make('admin'),
+                'password' => Hash::make('Admin@123'),
                 'role' => 'admin',
                 'status' => 'active',
             ],
-            // Agent
+            // Enumerator
             [
-                'name' => 'Agent',
-                'username' => 'agent',
-                'email' => 'agent@gmail.com',
-                'password' => Hash::make('agent'),
-                'role' => 'agent',
+                'name' => 'Enumerator',
+                'username' => 'enumerator',
+                'email' => 'enumerator@gmail.com',
+                'password' => Hash::make('Enumerator@123'),
+                'role' => 'enumerator',
                 'status' => 'active',
             ],
             // Users
@@ -39,7 +49,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'User',
                 'username' => 'user',
                 'email' => 'user@gmail.com',
-                'password' => Hash::make('user'),
+                'password' => Hash::make('User@123'),
                 'role' => 'user',
                 'status' => 'active',
             ],

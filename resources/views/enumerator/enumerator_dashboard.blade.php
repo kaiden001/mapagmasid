@@ -19,7 +19,7 @@ License: For each use you must have a valid license purchased only from above li
     <meta name="keywords"
         content="nobleui, bootstrap, bootstrap 5, bootstrap5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
-    <title> Admin Panel - MAPAGMASID</title>
+    <title> Enumerator Panel - MAPAGMASID</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,7 +52,7 @@ License: For each use you must have a valid license purchased only from above li
 
 <body>
 
-    <body class="sidebar-dark">
+    <body>
         <div class="main-wrapper">
             @include('body.sidebar')
 
@@ -83,7 +83,7 @@ License: For each use you must have a valid license purchased only from above li
         <!-- endinject -->
 
         <!-- Custom js for this page -->
-        <script src="{{ asset('assets/js/dashboard-light.js') }}"></script>
+        <script src="{{ asset('assets/js/dashboard-dark.js') }}"></script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

@@ -1,4 +1,13 @@
-@extends('admin.admin_dashboard')
+@php
+    $user = Auth::user();
+    if ($user->role == 'admin') {
+        $extends_to = 'admin.admin_dashboard';
+    } elseif ($user->role == 'enumerator') {
+        $extends_to = 'enumerator.enumerator_dashboard';
+    }
+@endphp
+
+@extends($extends_to)
 @section('content')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <div class="page-content">
@@ -12,7 +21,7 @@
 
                             <div>
                                 <img class="wd-100 rounded-circle"
-                                    src="{{ !empty($profileData->photo) ? url('upload/admin_images/' . $profileData->photo) : url('upload/no_image.jpg') }}"
+                                    src="{{ !empty($profileData->photo) ? url('upload/profile/' . $profileData->photo) : url('upload/no_image.jpg') }}"
                                     alt="profile">
                                 <span class="h4 ms-3">{{ $profileData->name }}</span>
                             </div>

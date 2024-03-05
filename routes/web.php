@@ -3,10 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AgentController;
+use App\Http\Controllers\EnumeratorController;
 use App\Http\Controllers\Backend\PropertyTypeController;
 use App\Http\Controllers\Backend\AmenitiesController;
-
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,22 +18,32 @@ use App\Http\Controllers\Backend\AmenitiesController;
 |
 */
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [AuthenticatedSessionController::class, 'Redirect'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/view', [ProfileController::class, 'viewProfile'])->name('profile.view');
+    Route::post('profile/store', [ProfileController::class, 'EditProfile'])->name('profile.edit');
+    Route::get('change/password', [ProfileController::class, 'ChangePassword'])->name('change.password');
+    Route::get('/logout', [AuthenticatedSessionController::class, 'Logout'])->name('user.logout');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
 
+Route::middleware('guest')->group(function () {
+    Route::get('/login-page', [AdminController::class, 'AdminLogin'])->name('admin.login');
+});
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
@@ -45,10 +55,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'role:agent'])->group(function () {
-    Route::get('/agent/dashboard', [AgentController::class, 'AgentDashboard'])->name('agent.dashboard');
+Route::middleware(['auth', 'role:enumerator'])->group(function () {
+    Route::get('/enumerator/dashboard', [EnumeratorController::class, 'EnumeratorDashboard'])->name('enumerator.dashboard');
 });
-Route::get('/login-page', [AdminController::class, 'AdminLogin'])->name('admin.login');
+
 
 
 
