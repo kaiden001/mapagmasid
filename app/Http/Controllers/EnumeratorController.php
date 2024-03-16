@@ -14,6 +14,10 @@ class EnumeratorController extends Controller
     {
         return view('enumerator.index');
     }
+    public function Household()
+    {
+        return view('enumerator.household');
+    }
     public function EnumeratorLogout(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

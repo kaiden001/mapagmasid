@@ -4,7 +4,7 @@
 @endphp
 <nav class="sidebar">
     <div class="sidebar-header">
-        <a href="#" class="sidebar-brand"><span>MAPA</span>GMA<span>SID</span> </a>
+        <a href="#" class="sidebar-brand"> <b class="text-primary">MAPA</b>GMA<b class="text-primary">SID</b></a>
         <div class="sidebar-toggler not-active">
             <span></span>
             <span></span>

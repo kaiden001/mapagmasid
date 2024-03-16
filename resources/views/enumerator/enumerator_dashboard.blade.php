@@ -41,7 +41,8 @@ License: For each use you must have a valid license purchased only from above li
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/demo1/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo3/style.css') }}">
+
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
@@ -54,11 +55,11 @@ License: For each use you must have a valid license purchased only from above li
 
     <body>
         <div class="main-wrapper">
-            @include('body.sidebar')
+            @include('body.enumerator_sidebar')
 
             <div class="page-wrapper">
-
-                @include('body.header')
+                {{--
+                @include('body.header') --}}
                 @yield('content')
 
                 @include('body.footer')
@@ -83,7 +84,7 @@ License: For each use you must have a valid license purchased only from above li
         <!-- endinject -->
 
         <!-- Custom js for this page -->
-        <script src="{{ asset('assets/js/dashboard-dark.js') }}"></script>
+        <script src="{{ asset('assets/js/dashboard-light.js') }}"></script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth', 'role:enumerator'])->group(function () {
     Route::get('/enumerator/dashboard', [EnumeratorController::class, 'EnumeratorDashboard'])->name('enumerator.dashboard');
+    Route::get('/enumerator/household', [EnumeratorController::class, 'Household'])->name('enumerator.household');
 });
 
 

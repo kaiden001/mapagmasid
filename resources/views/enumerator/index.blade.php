@@ -1,443 +1,80 @@
 @extends('enumerator.enumerator_dashboard')
 @section('content')
+    <script src="{{ asset('assets/js/scanner/instascan.min.js') }}"></script>
     <div class="page-content">
         <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
             <div>
-                <h4 class="mb-3 mb-md-0">Welcome to Enumerator Dashboard</h4>
+                <h4 class="mb-3 mb-md-0">Welcome @php echo Auth::user()->name; @endphp</h4>
             </div>
-            <div class="d-flex align-items-center flex-wrap text-nowrap">
-                <div class="input-group flatpickr wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                    <span class="input-group-text input-group-addon bg-transparent border-primary" data-toggle><i
-                            data-feather="calendar" class="text-primary"></i></span>
-                    <input type="text" class="form-control bg-transparent border-primary" placeholder="Select date"
-                        data-input />
-                </div>
-                <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="printer"></i>
-                    Print
-                </button>
-                <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="download-cloud"></i>
-                    Download Report
-                </button>
-            </div>
+
         </div>
-
-        <div class="row">
-            <div class="col-12 col-xl-12 stretch-card">
-                <div class="row flex-grow-1">
-                    <div class="col-md-4 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">Total Households</h6>
-                                    <div class="dropdown mb-2">
-                                        <a type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="eye" class="icon-sm me-2"></i>
-                                                <span class="">View</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="edit-2" class="icon-sm me-2"></i>
-                                                <span class="">Edit</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="trash" class="icon-sm me-2"></i>
-                                                <span class="">Delete</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="printer" class="icon-sm me-2"></i>
-                                                <span class="">Print</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="download" class="icon-sm me-2"></i>
-                                                <span class="">Download</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 col-md-12 col-xl-5">
-                                        <h3 class="mb-2">3,897</h3>
-                                        <div class="d-flex align-items-baseline">
-                                            <p class="text-success">
-                                                <span>+3.3%</span>
-                                                <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-12 col-xl-7">
-                                        <div id="customersChart" class="mt-md-3 mt-xl-0"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">Population</h6>
-                                    <div class="dropdown mb-2">
-                                        <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="eye" class="icon-sm me-2"></i>
-                                                <span class="">View</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="edit-2" class="icon-sm me-2"></i>
-                                                <span class="">Edit</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="trash" class="icon-sm me-2"></i>
-                                                <span class="">Delete</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="printer" class="icon-sm me-2"></i>
-                                                <span class="">Print</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="download" class="icon-sm me-2"></i>
-                                                <span class="">Download</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 col-md-12 col-xl-5">
-                                        <h3 class="mb-2" id="amenitiesCount">Loading....</h3>
-                                        <div class="d-flex align-items-baseline">
-                                            {{-- <p class="text-danger">
-                                                <span>-2.8%</span>
-                                                <i data-feather="arrow-down" class="icon-sm mb-1"></i>
-                                            </p> --}}
-                                            <p class="text-success">
-                                                <span>+3.3%</span>
-                                                <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-12 col-xl-7">
-                                        <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 grid-margin stretch-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-baseline">
-                                    <h6 class="card-title mb-0">Growth</h6>
-                                    <div class="dropdown mb-2">
-                                        <a type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="eye" class="icon-sm me-2"></i>
-                                                <span class="">View</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="edit-2" class="icon-sm me-2"></i>
-                                                <span class="">Edit</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="trash" class="icon-sm me-2"></i>
-                                                <span class="">Delete</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="printer" class="icon-sm me-2"></i>
-                                                <span class="">Print</span></a>
-                                            <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                    data-feather="download" class="icon-sm me-2"></i>
-                                                <span class="">Download</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 col-md-12 col-xl-5">
-                                        <h3 class="mb-2">89.87%</h3>
-                                        <div class="d-flex align-items-baseline">
-                                            <p class="text-success">
-                                                <span>+2.8%</span>
-                                                <i data-feather="arrow-up" class="icon-sm mb-1"></i>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-md-12 col-xl-7">
-                                        <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="row">
             <div class="col-lg-12 col-xl-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-baseline mb-2">
-                            <h6 class="card-title mb-0">Monthly sales</h6>
-                            <div class="dropdown mb-2">
-                                <a type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i>
-                                        <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i>
-                                        <span class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i>
-                                        <span class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i>
-                                        <span class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i>
-                                        <span class="">Download</span></a>
-                                </div>
-                            </div>
+                            <h6 class="card-title mb-0">Scan Household Number</h6>
+
                         </div>
                         <p class="text-muted">
-                            Sales are activities related to selling or the number of
-                            goods or services sold in a given time period.
+                            MAPAGMASID will automatically search for the household number. If camera is not available, you
+                            can enter
+                            it manually.
                         </p>
-                        <div id="monthlySalesChart"></div>
+                        <div class="row d-flex align-items center justify-content-center mt-5">
+                            <div class="col-lg-4 col-xl-4 col-sm-12 d-flex align-items-center gap-3">
+                                <button class="btn btn-sm btn-inverse-secondary" id="showScanner"><i
+                                        data-feather="camera"></i></button>
+                                <span class="fw-bold">Scan QRCode</span>
+                            </div>
+                            <div class="col-12 text-center">OR</div>
+                            <div class="col-lg-4 col-xl-4 col-sm-12">
+                                <label for="searchHousehold">Household Number</label>
+                                <div class="input-group mb-3">
+
+                                    <input type="text" class="col-6 form-control" aria-label="Username"
+                                        aria-describedby="basic-addon1" id="searchHousehold" autocomplete="off"
+                                        placeholder="Enter Household Number"> <span
+                                        class="input-group-text cursor-pointer btn btn-inverse-secondary"
+                                        id="basic-addon1"><i data-feather="search"></i></span>
+                                </div>
+                                <div class="col-12">
+                                    <a href="{{ route('enumerator.household') }}" class="d-flex gap-2"><span>Gabriel, Lance
+                                            Tristan</span> - <span>42123018-00091</span></a>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
-        <!-- row -->
-
-        <div class="row">
-            <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-baseline mb-2">
-                            <h6 class="card-title mb-0">Inbox</h6>
-                            <div class="dropdown mb-2">
-                                <a type="button" id="dropdownMenuButton6" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i>
-                                        <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i>
-                                        <span class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i>
-                                        <span class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i>
-                                        <span class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i>
-                                        <span class="">Download</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <a href="javascript:;" class="d-flex align-items-center border-bottom pb-3">
-                                <div class="me-3">
-                                    <img src="https://via.placeholder.com/35x35" class="rounded-circle wd-35"
-                                        alt="user" />
-                                </div>
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="text-body mb-2">Leonardo Payne</h6>
-                                        <p class="text-muted tx-12">12.30 PM</p>
-                                    </div>
-                                    <p class="text-muted tx-13">
-                                        Hey! there I'm available...
-                                    </p>
-                                </div>
-                            </a>
-                            <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                                <div class="me-3">
-                                    <img src="https://via.placeholder.com/35x35" class="rounded-circle wd-35"
-                                        alt="user" />
-                                </div>
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="text-body mb-2">Carl Henson</h6>
-                                        <p class="text-muted tx-12">02.14 AM</p>
-                                    </div>
-                                    <p class="text-muted tx-13">
-                                        I've finished it! See you so..
-                                    </p>
-                                </div>
-                            </a>
-                            <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                                <div class="me-3">
-                                    <img src="https://via.placeholder.com/35x35" class="rounded-circle wd-35"
-                                        alt="user" />
-                                </div>
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="text-body mb-2">Jensen Combs</h6>
-                                        <p class="text-muted tx-12">08.22 PM</p>
-                                    </div>
-                                    <p class="text-muted tx-13">
-                                        This template is awesome!
-                                    </p>
-                                </div>
-                            </a>
-                            <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                                <div class="me-3">
-                                    <img src="https://via.placeholder.com/35x35" class="rounded-circle wd-35"
-                                        alt="user" />
-                                </div>
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="text-body mb-2">Amiah Burton</h6>
-                                        <p class="text-muted tx-12">05.49 AM</p>
-                                    </div>
-                                    <p class="text-muted tx-13">Nice to meet you</p>
-                                </div>
-                            </a>
-                            <a href="javascript:;" class="d-flex align-items-center border-bottom py-3">
-                                <div class="me-3">
-                                    <img src="https://via.placeholder.com/35x35" class="rounded-circle wd-35"
-                                        alt="user" />
-                                </div>
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="text-body mb-2">Yaretzi Mayo</h6>
-                                        <p class="text-muted tx-12">01.19 AM</p>
-                                    </div>
-                                    <p class="text-muted tx-13">
-                                        Hey! there I'm available...
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
+        <div class="modal fade" id="scanQR" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="qrScannerModalLabel">
+                            <div id="result"></div>
+                            Scan QrCode
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-7 col-xl-8 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-baseline mb-2">
-                            <h6 class="card-title mb-0">Projects</h6>
-                            <div class="dropdown mb-2">
-                                <a type="button" id="dropdownMenuButton7" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="eye" class="icon-sm me-2"></i>
-                                        <span class="">View</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="edit-2" class="icon-sm me-2"></i>
-                                        <span class="">Edit</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="trash" class="icon-sm me-2"></i>
-                                        <span class="">Delete</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="printer" class="icon-sm me-2"></i>
-                                        <span class="">Print</span></a>
-                                    <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                            data-feather="download" class="icon-sm me-2"></i>
-                                        <span class="">Download</span></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="pt-0">#</th>
-                                        <th class="pt-0">Project Name</th>
-                                        <th class="pt-0">Start Date</th>
-                                        <th class="pt-0">Due Date</th>
-                                        <th class="pt-0">Status</th>
-                                        <th class="pt-0">Assign</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>NobleUI jQuery</td>
-                                        <td>01/01/2022</td>
-                                        <td>26/04/2022</td>
-                                        <td><span class="badge bg-danger">Released</span></td>
-                                        <td>Leonardo Payne</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>NobleUI Angular</td>
-                                        <td>01/01/2022</td>
-                                        <td>26/04/2022</td>
-                                        <td><span class="badge bg-success">Review</span></td>
-                                        <td>Carl Henson</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>NobleUI ReactJs</td>
-                                        <td>01/05/2022</td>
-                                        <td>10/09/2022</td>
-                                        <td><span class="badge bg-info">Pending</span></td>
-                                        <td>Jensen Combs</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>NobleUI VueJs</td>
-                                        <td>01/01/2022</td>
-                                        <td>31/11/2022</td>
-                                        <td>
-                                            <span class="badge bg-warning">Work in Progress</span>
-                                        </td>
-                                        <td>Amiah Burton</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>NobleUI Laravel</td>
-                                        <td>01/01/2022</td>
-                                        <td>31/12/2022</td>
-                                        <td>
-                                            <span class="badge bg-danger">Coming soon</span>
-                                        </td>
-                                        <td>Yaretzi Mayo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>NobleUI NodeJs</td>
-                                        <td>01/01/2022</td>
-                                        <td>31/12/2022</td>
-                                        <td>
-                                            <span class="badge bg-primary">Coming soon</span>
-                                        </td>
-                                        <td>Carl Henson</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom">3</td>
-                                        <td class="border-bottom">NobleUI EmberJs</td>
-                                        <td class="border-bottom">01/05/2022</td>
-                                        <td class="border-bottom">10/11/2022</td>
-                                        <td class="border-bottom">
-                                            <span class="badge bg-info">Pending</span>
-                                        </td>
-                                        <td class="border-bottom">Jensen Combs</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="modal-body " style="height:300px; width: 100%;">
+                        <video id="video" playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+
+                    </div>
+                    <div class=" modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- row -->
+
     </div>
+
     {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script>
         const amenitiesCount = $('#amenitiesCount');
@@ -474,4 +111,107 @@
             });
         });
     </script> --}}
+
+    <script src="{{ asset('assets/js/scanner/jsQR.js') }}"></script>
+    <script>
+        $('#showScanner').click(function() {
+            $('#scanQR').modal('show')
+
+        })
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('video');
+            const resultDiv = document.getElementById('result');
+            let scannerInterval;
+
+            // Function to start the QR code scanning process
+            function startScanner() {
+
+                navigator.mediaDevices.enumerateDevices()
+                    .then(devices => {
+                        const backCamera = devices.find(device => device.kind === 'videoinput' && device.label
+                            .includes('back'));
+
+                        if (backCamera) {
+                            return navigator.mediaDevices.getUserMedia({
+                                video: {
+                                    deviceId: backCamera.deviceId
+                                }
+                            });
+                        } else {
+                            // Fallback to default getUserMedia if back camera is not found
+                            return navigator.mediaDevices.getUserMedia({
+                                video: true
+                            });
+                        }
+                    })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                        video.play();
+
+                        video.addEventListener('loadedmetadata', () => {
+                            // Start scanning frames
+                            scannerInterval = setInterval(captureFrame, 1000 / 30);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Error accessing camera:', error);
+                    });
+            }
+
+            // Function to stop the QR code scanning process
+            function stopScanner() {
+                if (scannerInterval) {
+                    clearInterval(scannerInterval);
+                }
+
+                // Stop the camera stream
+                const stream = video.srcObject;
+                if (stream) {
+                    const tracks = stream.getTracks();
+                    tracks.forEach(track => track.stop());
+                }
+            }
+
+            // Function to capture video frames and attempt to decode QR codes
+            function captureFrame() {
+                if (video.videoWidth == 0) {
+                    return;
+                }
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+
+                // Set canvas dimensions to match the video frame
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+                // Attempt to decode QR code
+                const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+
+                if (code) {
+                    resultDiv.textContent = `${code.data}`;
+
+
+                    stopScanner();
+                    // $('#scanQR').modal('hide');
+                } else {
+                    resultDiv.textContent = 'No QR Code detected';
+                }
+            }
+
+            // Event listener for when the modal is shown
+            const modalElement = document.getElementById('scanQR');
+            modalElement.addEventListener('shown.bs.modal', () => {
+                startScanner();
+            });
+
+            // Event listener for when the modal is hidden
+            modalElement.addEventListener('hidden.bs.modal', () => {
+                stopScanner();
+            });
+        });
+    </script>
 @endsection

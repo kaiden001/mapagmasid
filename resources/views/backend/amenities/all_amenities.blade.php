@@ -49,7 +49,7 @@
                     <div class="card-body">
                         <h6 class="card-title">All Amenities</h6>
                         <div class="row">
-                            <div class="form-group col-4 d-flex">
+                            <div class="form-group col-lg-4 col-sm-12 d-flex">
                                 <input type="text" id="searchInput" class="form-control " placeholder="Search...">
                                 <button id="searchButton" class="btn btn-primary">Search </button>
                                 <button id="resetSearch" class="btn btn-secondary ms-2">Reset</button>
